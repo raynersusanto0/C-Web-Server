@@ -34,7 +34,7 @@
 #include "mime.h"
 #include "cache.h"
 
-#define PORT "3490"  // the port users will be connecting to
+#define PORT "8080"  // the port users will be connecting to
 
 #define SERVER_FILES "./serverfiles"
 #define SERVER_ROOT "./serverroot"
@@ -53,11 +53,23 @@ int send_response(int fd, char *header, char *content_type, void *body, int cont
     const int max_response_size = 262144;
     char response[max_response_size];
 
-    // Build HTTP response and store it in response
+    // Build HTTP response and store it in responsenotes
 
     ///////////////////
     // IMPLEMENT ME! //
     ///////////////////
+    time_t rawtime;
+    struct tm *info;
+    time( &rawtime );
+    info = localtime( &rawtime );
+    int response_length = strlen(header) + strlen(body);
+    
+    sprintf(response, "%s\n" 
+        "Date: %s"
+        "Content-Type: %s\n"
+        "Content-Length: %d\n"
+        "Connection: close\n\n"
+        "%s", header, asctime(info), content_type, response_length, body);
 
     // Send it all!
     int rv = send(fd, response, response_length, 0);
@@ -213,8 +225,8 @@ int main(void)
         
         // newfd is a new socket descriptor for the new connection.
         // listenfd is still listening for new connections.
-
         handle_http_request(newfd, cache);
+        resp_404(newfd);
 
         close(newfd);
     }

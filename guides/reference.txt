@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK --> Response Status?
+Date: Wed Dec 20 13:05:11 PST 2017 --> Date
+Connection: close --> Status Conenction
+Content-Length: 41749 --> Length
+Content-Type: text/html --> Type
+
+<!DOCTYPE html><html><head><title>Lambda School ...
+
+--> HTML Content
